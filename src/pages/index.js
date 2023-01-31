@@ -6,7 +6,7 @@ import { getMoviesByKeywords, getPopularMovies } from "@/services/movie";
 import MovieCard from "@/components/MovieCard";
 
 //Chakra Ui
-import { Flex, Input, Text } from "@chakra-ui/react";
+import { Flex, Input, Spinner, Text } from "@chakra-ui/react";
 
 export default function Home() {
   //Movies States
@@ -14,23 +14,29 @@ export default function Home() {
   const [movieFilter, setMovieFilter] = React.useState("");
   const [filteredMovies, setFilteredMovies] = useState([]);
 
+  //Loading State
+  const [loading, setLoading] = useState(true);
+
   const handleChange = (event) => setMovieFilter(event.target.value);
 
   useEffect(() => {
     const request = async () => {
       const data = await getPopularMovies();
       setPopularMovies(data.results);
+      setLoading(false);
     };
     request();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (movieFilter.length > 2) {
+    if (movieFilter.length > 0) {
+      setLoading(true);
       const lowerFilter = movieFilter.toLowerCase();
       const request = async () => {
         const data = await getMoviesByKeywords(lowerFilter);
         setFilteredMovies(data.results);
+        setLoading(false);
       };
       request();
     } else {
@@ -57,39 +63,49 @@ export default function Home() {
         <Input
           value={movieFilter}
           onChange={handleChange}
-          placeholder="Você pode pesquisar por um filme aqui"
+          placeholder="Pesquisar"
           size="sm"
           maxW="20%"
+          mt="3"
         />
       </Flex>
-      <Flex
-        flexDirection="row"
-        justifyContent="space-evenly"
-        flexWrap="wrap"
-        gap="20px"
-      >
-        {popularMovies &&
-          filteredMovies.length === 0 &&
-          popularMovies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              title={movie.title}
-              releaseDate={movie.release_date}
-              image={movie.poster_path}
-              id={movie.id}
-            />
-          ))}
-        {filteredMovies.length > 0 &&
-          filteredMovies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              title={movie.title}
-              releaseDate={movie.release_date}
-              image={movie.poster_path}
-              id={movie.id}
-            />
-          ))}
-      </Flex>
+      {loading && <Spinner alignSelf="center" size="xl" />}
+      {!loading && (
+        <Flex
+          flexDirection="row"
+          justifyContent="space-evenly"
+          flexWrap="wrap"
+          gap="20px"
+        >
+          {popularMovies &&
+            filteredMovies.length === 0 &&
+            movieFilter.length === 0 &&
+            popularMovies.map((movie) => (
+              <MovieCard
+                key={movie.id}
+                title={movie.title}
+                releaseDate={movie.release_date}
+                image={movie.poster_path}
+                id={movie.id}
+              />
+            ))}
+          {filteredMovies.length > 0 &&
+            filteredMovies.map((movie) => (
+              <MovieCard
+                key={movie.id}
+                title={movie.title}
+                releaseDate={movie.release_date}
+                image={movie.poster_path}
+                id={movie.id}
+              />
+            ))}
+          {filteredMovies.length === 0 && movieFilter && (
+            <Text fontSize="4xl" as="b">
+              Nenhum filme encontrado!
+            </Text>
+          )}
+        </Flex>
+      )}
     </Flex>
   );
 }
