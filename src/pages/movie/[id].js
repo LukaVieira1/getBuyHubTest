@@ -54,6 +54,8 @@ export default function MoviePage() {
                   : "https://picsum.photos/200"
               }
               alt={movie.title}
+              width={["100%", "278px"]}
+              height="278px"
               borderRadius="lg"
             />
             <Flex flexDirection="column">
