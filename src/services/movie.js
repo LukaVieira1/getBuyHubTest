@@ -37,3 +37,16 @@ export const getSimilarMovies = async (movieId) => {
     return error;
   }
 };
+
+export const getMoviesByKeywords = async (keywords) => {
+  try {
+    const response = await (
+      await fetch(
+        `${client}/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${keywords}`
+      )
+    ).json();
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
