@@ -46,7 +46,7 @@ export default function Home() {
 
   return (
     <Flex flexDirection="column" p="30px 10px" gap="10">
-      <Flex justifyContent="space-between" align="center">
+      <Flex justifyContent="space-between" align="center" p="0 20px">
         {!movieFilter && (
           <Text fontSize="4xl" as="b">
             Filmes populares:
@@ -64,9 +64,9 @@ export default function Home() {
           value={movieFilter}
           onChange={handleChange}
           placeholder="Pesquisar"
-          size="sm"
+          size="lg"
           maxW="20%"
-          mt="3"
+          mt="2"
         />
       </Flex>
       {loading && <Spinner alignSelf="center" size="xl" />}
