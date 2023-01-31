@@ -46,18 +46,25 @@ export default function Home() {
 
   return (
     <Flex flexDirection="column" p="30px 10px" gap="10">
-      <Flex justifyContent="space-between" align="center" p="0 20px">
+      <Flex
+        flexDirection={["column", "row"]}
+        justifyContent="space-between"
+        align="center"
+        p="0 20px"
+      >
         {!movieFilter && (
           <Text fontSize="4xl" as="b">
             Filmes populares:
           </Text>
         )}
         {movieFilter && (
-          <Flex gap="1" align="center">
+          <Flex flexDirection="column" gap="1">
             <Text fontSize="4xl" as="b">
               Resultados com:
             </Text>
-            <Text mt="1.5">{movieFilter}</Text>
+            <Text display={["none", "block"]} mt="1.5">
+              {movieFilter}
+            </Text>
           </Flex>
         )}
         <Input
@@ -65,7 +72,7 @@ export default function Home() {
           onChange={handleChange}
           placeholder="Pesquisar"
           size="lg"
-          maxW="20%"
+          maxW={["100%", "20%"]}
           mt="2"
         />
       </Flex>
@@ -100,7 +107,7 @@ export default function Home() {
               />
             ))}
           {filteredMovies.length === 0 && movieFilter && (
-            <Text fontSize="4xl" as="b">
+            <Text fontSize={["3xl", "4xl"]} as="b">
               Nenhum filme encontrado!
             </Text>
           )}
