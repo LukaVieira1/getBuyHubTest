@@ -10,6 +10,7 @@ import { Flex, Heading, Image, Spinner, Stack, Text } from "@chakra-ui/react";
 
 //components
 import MovieCard from "@/components/MovieCard";
+import Link from "next/link";
 
 export default function MoviePage() {
   //Movie State
@@ -42,9 +43,16 @@ export default function MoviePage() {
       {loading && <Spinner alignSelf="center" size="xl" mt="20%" />}
       {!loading && (
         <Flex p="20px" flexDirection="column" gap="16">
-          <Flex gap="3">
+          <Link href={"/"}>
+            <Text as="u">Voltar para página inicial</Text>
+          </Link>
+          <Flex flexDirection={["column", "row"]} gap="3">
             <Image
-              src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2${movie.poster_path}`}
+              src={
+                movie.poster_path !== null
+                  ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2${movie.poster_path}`
+                  : "https://picsum.photos/200"
+              }
               alt={movie.title}
               borderRadius="lg"
             />
@@ -57,7 +65,7 @@ export default function MoviePage() {
                 </Text>
                 <Text maxW="xl">
                   <strong>Sinopse:</strong>
-                  {movie.overview}
+                  {movie.overview ? movie.overview : "Não há sinopse."}
                 </Text>
               </Stack>
             </Flex>
