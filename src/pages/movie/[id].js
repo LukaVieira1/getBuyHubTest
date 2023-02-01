@@ -95,7 +95,11 @@ export default function MoviePage() {
                   />
                 ))}
               {similarMovies.length === 0 && (
-                <Text fontSize={["3xl", "4xl"]} as="b">
+                <Text
+                  hidden={loading ? "true" : "false"}
+                  fontSize={["3xl", "4xl"]}
+                  as="b"
+                >
                   Nenhum filme relacionado!
                 </Text>
               )}
