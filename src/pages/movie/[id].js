@@ -12,6 +12,9 @@ import { Flex, Heading, Image, Spinner, Stack, Text } from "@chakra-ui/react";
 import MovieCard from "@/components/MovieCard";
 import Link from "next/link";
 
+//utils
+import { formatLongDate } from "@/utils/dateFormat";
+
 export default function MoviePage() {
   //Movie State
   const [movie, setMovie] = useState({});
@@ -63,7 +66,7 @@ export default function MoviePage() {
                 <Heading size="md">{movie.title}</Heading>
                 <Text>
                   <strong>Lançamento: </strong>
-                  {movie.release_date}
+                  {formatLongDate(movie.releaseDate)}
                 </Text>
                 <Text maxW="xl">
                   <strong>Sinopse: </strong>
