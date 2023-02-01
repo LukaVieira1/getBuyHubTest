@@ -17,7 +17,23 @@ export default function Home() {
   //Loading State
   const [loading, setLoading] = useState(true);
 
-  const handleChange = (event) => setMovieFilter(event.target.value);
+  // const handleChange = (event) => {(
+  //   setMovieFilter(event.target.value),
+  // )};
+
+  const handleChange = (event) => {
+    let regex = /^[a-zA-Z0-9À-ú ]*$/;
+    //this validation is to avoid the white space at the beginning of the string and allow the user to remove all the characters, because
+    //whitout else they can't remove the last character
+    if (event.target.value === " ") {
+      regex = /^[a-zA-Z0-9À-ú][a-zA-Z0-9À-ú ]*$/;
+    } else {
+      regex = /^[a-zA-Z0-9À-ú ]*$/;
+    }
+    if (regex.test(event.target.value)) {
+      setMovieFilter(event.target.value);
+    }
+  };
 
   useEffect(() => {
     const request = async () => {
@@ -30,7 +46,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (movieFilter.length > 0) {
+    if (movieFilter?.length > 0) {
       setLoading(true);
       const lowerFilter = movieFilter.toLowerCase();
       const request = async () => {
@@ -38,6 +54,7 @@ export default function Home() {
         setFilteredMovies(data.results);
         setLoading(false);
       };
+
       request();
     } else {
       setFilteredMovies([]);
