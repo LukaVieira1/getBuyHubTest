@@ -62,11 +62,11 @@ export default function MoviePage() {
               <Stack mt={6} spacing="3">
                 <Heading size="md">{movie.title}</Heading>
                 <Text>
-                  <strong>Lançamento:</strong>
+                  <strong>Lançamento: </strong>
                   {movie.release_date}
                 </Text>
                 <Text maxW="xl">
-                  <strong>Sinopse:</strong>
+                  <strong>Sinopse: </strong>
                   {movie.overview ? movie.overview : "Não há sinopse."}
                 </Text>
               </Stack>
