@@ -35,7 +35,7 @@ const MovieCard = (props) => {
               <Heading maxW="278px" size="md">
                 {title}
               </Heading>
-              <Text>Data de lançamento: {formatLongDate(releaseDate)}</Text>
+              <Text>Lançado em: {formatLongDate(releaseDate)}</Text>
             </Stack>
           </CardBody>
         </Card>

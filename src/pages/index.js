@@ -77,10 +77,7 @@ export default function Home() {
         {movieFilter && (
           <Flex flexDirection="column" gap="1">
             <Text fontSize="4xl" as="b">
-              Resultados com:
-            </Text>
-            <Text display={["none", "block"]} mt="1.5">
-              {movieFilter}
+              Resultados:
             </Text>
           </Flex>
         )}
