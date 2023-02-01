@@ -94,6 +94,11 @@ export default function MoviePage() {
                     id={movie.id}
                   />
                 ))}
+              {similarMovies.length === 0 && (
+                <Text fontSize={["3xl", "4xl"]} as="b">
+                  Nenhum filme relacionado!
+                </Text>
+              )}
             </Flex>
           </Flex>
         </Flex>
