@@ -4,15 +4,21 @@ import { Card, CardBody, Image, Stack, Heading, Text } from "@chakra-ui/react";
 //Utils
 import { formatLongDate } from "@/utils/dateFormat";
 
-//Components
+//Next
 import Link from "next/link";
 
 const MovieCard = (props) => {
   const { title, releaseDate, image, id } = props;
+
   return (
     <>
-      <Link href={`/movie/${id}`}>
-        <Card variant="filled" borderColor="blue" maxW="sm">
+      <Link href={`/movie/${id}`} variant="unstyled">
+        <Card
+          _hover={{ bg: "gray.300", boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)" }}
+          variant="filled"
+          borderColor="blue"
+          maxW="sm"
+        >
           <CardBody>
             <Image
               src={
