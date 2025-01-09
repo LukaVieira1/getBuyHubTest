@@ -1,28 +1,18 @@
-//Hooks
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
-//Services
 import { getMovie, getSimilarMovies } from "@/services/movie";
-
-//components
 import MovieCard from "@/components/MovieCard";
 import Link from "next/link";
-
-//utils
 import { formatLongDate } from "@/utils/dateFormat";
+import { IMovie, IMovieDetail } from "@/types/movie";
 
 export default function MoviePage() {
-  //Movie State
-  const [movie, setMovie] = useState({});
-  const [similarMovies, setSimilarMovies] = useState([]);
-
-  //Loading State
+  const [movie, setMovie] = useState<IMovieDetail>({} as IMovieDetail);
+  const [similarMovies, setSimilarMovies] = useState<IMovie[]>([]);
   const [loading, setLoading] = useState(true);
 
-  //Route
   const router = useRouter();
-  const movieId = router.query.id;
+  const movieId = router.query.id as string;
 
   useEffect(() => {
     if (movieId) {
@@ -66,7 +56,7 @@ export default function MoviePage() {
                 <h2 className="text-xl font-bold">{movie.title}</h2>
                 <p>
                   <strong>Lançamento: </strong>
-                  {formatLongDate(movie.releaseDate)}
+                  {formatLongDate(movie.release_date)}
                 </p>
                 <p className="max-w-xl">
                   <strong>Sinopse: </strong>

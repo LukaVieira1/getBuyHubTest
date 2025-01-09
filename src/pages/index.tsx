@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { getMoviesByKeywords, getPopularMovies } from "@/services/movie";
 import MovieCard from "@/components/MovieCard";
+import { IMovie } from "@/types/movie";
 
 export default function Home() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<IMovie[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +18,7 @@ export default function Home() {
     request();
   }, []);
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (search) {
       setLoading(true);
