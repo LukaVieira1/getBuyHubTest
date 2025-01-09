@@ -1,10 +1,9 @@
 import "@/styles/globals.css";
-import { ChakraProvider } from "@chakra-ui/react";
 
 export default function App({ Component, pageProps }) {
   return (
-    <ChakraProvider>
+    <div className="min-h-screen bg-gray-50">
       <Component {...pageProps} />
-    </ChakraProvider>
+    </div>
   );
 }

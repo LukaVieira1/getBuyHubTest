@@ -5,9 +5,6 @@ import { useEffect, useState } from "react";
 //Services
 import { getMovie, getSimilarMovies } from "@/services/movie";
 
-//chakra ui
-import { Flex, Heading, Image, Spinner, Stack, Text } from "@chakra-ui/react";
-
 //components
 import MovieCard from "@/components/MovieCard";
 import Link from "next/link";
@@ -42,51 +39,46 @@ export default function MoviePage() {
   }, [movieId]);
 
   return (
-    <Flex flexDirection="column">
-      {loading && <Spinner alignSelf="center" size="xl" mt="20%" />}
+    <div className="flex flex-col">
+      {loading && (
+        <div className="self-center mt-[20%]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+        </div>
+      )}
       {!loading && (
-        <Flex p="20px" flexDirection="column" gap="16">
+        <div className="flex flex-col p-5 gap-16">
           <Link href={"/"}>
-            <Text as="u">Voltar para página inicial</Text>
+            <span className="underline">Voltar para página inicial</span>
           </Link>
-          <Flex flexDirection={["column", "row"]} gap="3">
-            <Image
+
+          <div className="flex flex-col md:flex-row gap-3">
+            <img
               src={
                 movie.poster_path !== null
                   ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2${movie.poster_path}`
                   : "https://picsum.photos/200"
               }
               alt={movie.title}
-              width={["100%", "278px"]}
-              height="278px"
-              borderRadius="lg"
+              className="w-full md:w-[278px] h-[278px] rounded-lg object-cover"
             />
-            <Flex flexDirection="column">
-              <Stack mt={6} spacing="3">
-                <Heading size="md">{movie.title}</Heading>
-                <Text>
+            <div className="flex flex-col">
+              <div className="mt-6 space-y-3">
+                <h2 className="text-xl font-bold">{movie.title}</h2>
+                <p>
                   <strong>Lançamento: </strong>
                   {formatLongDate(movie.releaseDate)}
-                </Text>
-                <Text maxW="xl">
+                </p>
+                <p className="max-w-xl">
                   <strong>Sinopse: </strong>
                   {movie.overview ? movie.overview : "Não há sinopse."}
-                </Text>
-              </Stack>
-            </Flex>
-          </Flex>
+                </p>
+              </div>
+            </div>
+          </div>
 
-          <Flex flexDirection="column">
-            <Text fontSize="4xl" as="b">
-              Filmes relacionados:
-            </Text>
-            <Flex
-              flexDirection="row"
-              justifyContent="space-evenly"
-              flexWrap="wrap"
-              gap="20px"
-              m="30px 0"
-            >
+          <div className="flex flex-col">
+            <span className="text-4xl font-bold">Filmes relacionados:</span>
+            <div className="flex flex-row justify-evenly flex-wrap gap-5 my-8">
               {similarMovies &&
                 similarMovies.map((movie) => (
                   <MovieCard
@@ -98,18 +90,18 @@ export default function MoviePage() {
                   />
                 ))}
               {similarMovies.length === 0 && (
-                <Text
-                  hidden={loading ? "true" : "false"}
-                  fontSize={["3xl", "4xl"]}
-                  as="b"
+                <span
+                  className={`text-3xl md:text-4xl font-bold ${
+                    loading ? "hidden" : ""
+                  }`}
                 >
                   Nenhum filme relacionado!
-                </Text>
+                </span>
               )}
-            </Flex>
-          </Flex>
-        </Flex>
+            </div>
+          </div>
+        </div>
       )}
-    </Flex>
+    </div>
   );
 }
