@@ -1,47 +1,26 @@
-//Chakra Ui
-import { Card, CardBody, Image, Stack, Heading, Text } from "@chakra-ui/react";
-
-//Utils
-import { formatLongDate } from "@/utils/dateFormat";
-
-//Next
 import Link from "next/link";
+import { formatShortDate } from "@/utils/dateFormat";
 
-const MovieCard = (props) => {
-  const { title, releaseDate, image, id } = props;
-
+export default function MovieCard({ title, releaseDate, image, id }) {
   return (
-    <>
-      <Link href={`/movie/${id}`} variant="unstyled">
-        <Card
-          _hover={{ bg: "gray.300", boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)" }}
-          variant="filled"
-          borderColor="blue"
-          maxW="sm"
-        >
-          <CardBody>
-            <Image
-              src={
-                image !== null
-                  ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2${image}`
-                  : "https://picsum.photos/200"
-              }
-              width="278px"
-              height="278px"
-              alt={title}
-              borderRadius="lg"
-            />
-            <Stack mt="6" spacing="3">
-              <Heading maxW="278px" size="md">
-                {title}
-              </Heading>
-              <Text>Lançado em: {formatLongDate(releaseDate)}</Text>
-            </Stack>
-          </CardBody>
-        </Card>
-      </Link>
-    </>
+    <Link href={`/movie/${id}`}>
+      <div className="flex flex-col max-w-[200px] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <img
+          src={
+            image !== null
+              ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2${image}`
+              : "https://picsum.photos/200"
+          }
+          alt={title}
+          className="w-full h-[278px] object-cover"
+        />
+        <div className="p-4 bg-white">
+          <h2 className="text-lg font-semibold mb-2 line-clamp-2">{title}</h2>
+          <p className="text-gray-600 text-sm">
+            Lançamento: {formatShortDate(releaseDate)}
+          </p>
+        </div>
+      </div>
+    </Link>
   );
-};
-
-export default MovieCard;
+}
