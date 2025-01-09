@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPopularMovies, searchMovies } from "@/services/movie";
+import { getMoviesByKeywords, getPopularMovies } from "@/services/movie";
 import MovieCard from "@/components/MovieCard";
 
 export default function Home() {
@@ -21,7 +21,7 @@ export default function Home() {
     e.preventDefault();
     if (search) {
       setLoading(true);
-      const data = await searchMovies(search);
+      const data = await getMoviesByKeywords(search);
       setMovies(data.results);
       setLoading(false);
     }
