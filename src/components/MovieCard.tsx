@@ -1,7 +1,19 @@
 import Link from "next/link";
 import { formatShortDate } from "@/utils/dateFormat";
 
-export default function MovieCard({ title, releaseDate, image, id }) {
+interface MovieCardProps {
+  title: string;
+  releaseDate: string;
+  image: string | null;
+  id: number;
+}
+
+export default function MovieCard({
+  title,
+  releaseDate,
+  image,
+  id,
+}: MovieCardProps) {
   return (
     <Link href={`/movie/${id}`}>
       <div className="flex flex-col max-w-[200px] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
