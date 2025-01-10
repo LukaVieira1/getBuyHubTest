@@ -1,11 +1,14 @@
 import { IMovieResponse, IMovieDetail } from "@/types/movie";
 import { api } from "@/providers/api";
 
-export async function getPopularMovies(): Promise<IMovieResponse> {
+export async function getPopularMovies(
+  page: number = 1
+): Promise<IMovieResponse> {
   try {
     const { data } = await api.get<IMovieResponse>(`/movie/popular`, {
       params: {
         language: "pt-BR",
+        page,
       },
     });
     return data;
