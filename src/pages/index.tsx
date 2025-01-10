@@ -1,70 +1,121 @@
 import { useEffect, useState } from "react";
-import { getMoviesByKeywords, getPopularMovies } from "@/services/movie";
-import MovieCard from "@/components/MovieCard";
+import { getPopularMovies } from "@/services/movie";
 import { IMovie } from "@/types/movie";
+import MovieCarousel from "@/components/MovieCarousel";
+import { motion } from "framer-motion";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function Home() {
-  const [movies, setMovies] = useState<IMovie[]>([]);
-  const [search, setSearch] = useState("");
+  const [popularMovies, setPopularMovies] = useState<IMovie[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const request = async () => {
-      setLoading(true);
-      const data = await getPopularMovies();
-      setMovies(data.results);
-      setLoading(false);
+    const fetchMovies = async () => {
+      try {
+        setLoading(true);
+        const data = await getPopularMovies();
+        setPopularMovies(data.results);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      } finally {
+        setLoading(false);
+      }
     };
-    request();
+
+    fetchMovies();
   }, []);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (search) {
-      setLoading(true);
-      const data = await getMoviesByKeywords(search);
-      setMovies(data.results);
-      setLoading(false);
-    }
-  };
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600" />
+      </div>
+    );
+  }
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-8">
-      <form onSubmit={handleSearch} className="w-full max-w-md mb-8">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar filme..."
-            className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Buscar
-          </button>
-        </div>
-      </form>
+    <div className="min-h-screen text-white pb-16">
+      {/* Header */}
+      <header className="relative h-[70vh] mb-8">
+        {popularMovies[0] && (
+          <>
+            <div className="absolute inset-0">
+              <img
+                src={`https://image.tmdb.org/t/p/original${popularMovies[0].backdrop_path}`}
+                alt={popularMovies[0].title}
+                className="w-full h-full object-cover brightness-75"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent" />
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16 space-y-4">
+              <motion.h1
+                className="text-4xl md:text-6xl font-bold"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                {popularMovies[0].title}
+              </motion.h1>
+              <motion.p
+                className="text-lg md:text-xl max-w-2xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                {popularMovies[0].overview}
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                <Link href={`/movie/${popularMovies[0].id}`}>
+                  <button className="mt-4 inline-flex items-center px-6 py-3 rounded-lg border-2 border-white/20 hover:border-white bg-black/30 hover:bg-black/50 backdrop-blur-sm transition-all duration-300 group">
+                    <InformationCircleIcon className="w-5 h-5 mr-2 group-hover:text-red-500 transition-colors" />
+                    <span className="font-medium">Mais informações</span>
+                  </button>
+                </Link>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </header>
 
-      {loading ? (
-        <div className="self-center mt-[20%]">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      {/* Navigation */}
+      <nav className="sticky top-0 z-50 bg-gray-900/80 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <motion.div
+              className="text-2xl font-bold text-red-600"
+              whileHover={{ scale: 1.05 }}
+            >
+              MovieDB
+            </motion.div>
+            <div className="flex space-x-4">
+              <motion.button
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Início
+              </motion.button>
+              <motion.button
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Categorias
+              </motion.button>
+            </div>
+          </div>
         </div>
-      ) : (
-        <div className="flex flex-wrap justify-center gap-6">
-          {movies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              title={movie.title}
-              releaseDate={movie.release_date}
-              image={movie.poster_path}
-              id={movie.id}
-            />
-          ))}
-        </div>
-      )}
-    </main>
+      </nav>
+
+      {/* Main Content */}
+      <main className="relative z-10 pt-8">
+        <MovieCarousel title="Filmes Populares" movies={popularMovies} />
+      </main>
+    </div>
   );
 }
