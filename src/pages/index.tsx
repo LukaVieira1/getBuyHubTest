@@ -114,7 +114,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="relative z-10 pt-8">
-        <MovieCarousel title="Filmes Populares" movies={popularMovies} />
+        <MovieCarousel title="Filmes Populares" initialMovies={popularMovies} />
       </main>
     </div>
   );
