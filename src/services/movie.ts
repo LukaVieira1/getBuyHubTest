@@ -1,5 +1,5 @@
 import { IMovieResponse, IMovieDetail } from "@/types/movie";
-import { api, tmdbApiKey } from "@/providers/api";
+import { api } from "@/providers/api";
 
 export async function getPopularMovies(): Promise<IMovieResponse> {
   try {
