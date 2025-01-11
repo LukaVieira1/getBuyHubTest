@@ -119,16 +119,22 @@ export default function MovieCarousel({
       </motion.h2>
 
       <div className="relative group">
-        <div className="overflow-hidden" ref={emblaRef}>
+        <div className="overflow-visible" ref={emblaRef}>
           <div className="flex gap-4">
             {movies.map((movie) => (
               <motion.div
                 key={movie.id}
-                className="flex-none w-[calc(100%/3)] md:w-[calc(100%/5)]"
+                className="flex-none w-[calc(100%/3)] md:w-[calc(100%/5)] relative"
                 whileHover={{ scale: 1.05, zIndex: 1 }}
-                transition={{ duration: 0.2 }}
+                transition={{
+                  duration: 0.3,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
               >
-                <div className="relative aspect-[2/3] rounded-lg overflow-hidden shadow-lg">
+                <div className="relative aspect-[2/3] rounded-lg overflow-hidden shadow-lg hover:z-10">
                   <img
                     src={
                       movie.poster_path
