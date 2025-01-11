@@ -14,7 +14,7 @@ export default function Home() {
     const fetchMovies = async () => {
       try {
         setLoading(true);
-        const data = await getPopularMovies();
+        const data = await getPopularMovies(1);
         setPopularMovies(data.results);
       } catch (error) {
         console.error("Error fetching movies:", error);
