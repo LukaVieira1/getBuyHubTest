@@ -1,5 +1,6 @@
-import { IMovieResponse, IMovieDetail } from "@/types/movie";
+import { IMovieResponse, IMovieDetail, Genre } from "@/types/movie";
 import { api } from "@/providers/api";
+import { getGenderId } from "@/utils/moviesGenders";
 
 export async function getPopularMovies(
   page: number = 1
@@ -54,6 +55,26 @@ export async function getSimilarMovies(id: string): Promise<IMovieResponse> {
     const { data } = await api.get<IMovieResponse>(`/movie/${id}/similar`, {
       params: {
         language: "pt-BR",
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getMoviesByGenre(
+  genre: Genre,
+  page: number = 1
+): Promise<IMovieResponse> {
+  const genreId = getGenderId(genre);
+  try {
+    const { data } = await api.get<IMovieResponse>(`/discover/movie`, {
+      params: {
+        with_genres: genreId,
+        language: "pt-BR",
+        page,
       },
     });
     return data;
