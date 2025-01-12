@@ -18,6 +18,10 @@ import { motion } from "framer-motion";
 // Heroicons
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
+// Hooks
+import { useScrollPosition } from "@/hooks/useScrollPosition";
+import { useUI } from "@/contexts/UIContext";
+
 export default function Home() {
   const [popularMovies, setPopularMovies] = useState<IMovie[]>([]);
   const [fantasyMovies, setFantasyMovies] = useState<IMovie[]>([]);
@@ -28,6 +32,10 @@ export default function Home() {
   const [documentaryMovies, setDocumentaryMovies] = useState<IMovie[]>([]);
 
   const [loading, setLoading] = useState(true);
+
+  const scrollPosition = useScrollPosition();
+  const isScrolled = scrollPosition > 100;
+  const { isModalOpen } = useUI();
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -77,8 +85,56 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-white pb-16">
+      {/* Navigation */}
+      <motion.nav
+        initial={false}
+        animate={{
+          backgroundColor: isScrolled
+            ? "rgba(17, 24, 39, 0.8)"
+            : "rgba(17, 24, 39, 0)",
+          backdropFilter: isScrolled ? "blur(8px)" : "blur(0px)",
+          boxShadow: isScrolled ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)" : "none",
+          y: isModalOpen ? -100 : 0,
+        }}
+        transition={{
+          duration: 0.6,
+          ease: [0.32, 0.72, 0, 1],
+        }}
+        className={`fixed top-0 left-0 right-0 z-50 ${
+          !isScrolled &&
+          "bg-gradient-to-b from-gray-900/90 via-gray-900/50 to-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <motion.div
+              className="text-2xl font-bold text-red-600"
+              whileHover={{ scale: 1.05 }}
+            >
+              MovieDB
+            </motion.div>
+            <div className="flex space-x-4">
+              <motion.button
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Início
+              </motion.button>
+              <motion.button
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Categorias
+              </motion.button>
+            </div>
+          </div>
+        </div>
+      </motion.nav>
+
       {/* Header */}
-      <header className="relative h-[70vh] mb-8">
+      <header className="relative h-[70vh] mb-8 pt-16">
         {popularMovies[0] && (
           <>
             <div className="absolute inset-0">
@@ -87,7 +143,19 @@ export default function Home() {
                 alt={popularMovies[0].title}
                 className="w-full h-full object-cover brightness-75"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent">
+                <motion.div
+                  initial={false}
+                  animate={{
+                    opacity: isScrolled ? 0 : 1,
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    ease: [0.32, 0.72, 0, 1],
+                  }}
+                  className="absolute inset-0 bg-gradient-to-b from-gray-900/90 via-gray-900/0 to-transparent h-32"
+                />
+              </div>
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16 space-y-4">
               <motion.h1
@@ -122,36 +190,6 @@ export default function Home() {
           </>
         )}
       </header>
-
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-gray-900/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <motion.div
-              className="text-2xl font-bold text-red-600"
-              whileHover={{ scale: 1.05 }}
-            >
-              MovieDB
-            </motion.div>
-            <div className="flex space-x-4">
-              <motion.button
-                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Início
-              </motion.button>
-              <motion.button
-                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Categorias
-              </motion.button>
-            </div>
-          </div>
-        </div>
-      </nav>
 
       {/* Main Content */}
       <main className="relative z-10 pt-8">
