@@ -1,10 +1,22 @@
+// React
 import { useEffect, useState } from "react";
-import { getMoviesByGenre, getPopularMovies } from "@/services/movie";
-import { IMovie } from "@/types/movie";
-import MovieCarousel from "@/components/MovieCarousel";
-import { motion } from "framer-motion";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+
+// Services
+import { getMoviesByGenre, getPopularMovies } from "@/services/movie";
+
+// Types
+import { IMovie } from "@/types/movie";
+
+// Components
+import MovieCarousel from "@/components/MovieCarousel";
+import { Spinner } from "@/components/Spinner";
+
+// Framer Motion
+import { motion } from "framer-motion";
+
+// Heroicons
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   const [popularMovies, setPopularMovies] = useState<IMovie[]>([]);
@@ -14,6 +26,7 @@ export default function Home() {
   const [horrorMovies, setHorrorMovies] = useState<IMovie[]>([]);
   const [romanceMovies, setRomanceMovies] = useState<IMovie[]>([]);
   const [documentaryMovies, setDocumentaryMovies] = useState<IMovie[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -57,7 +70,7 @@ export default function Home() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600" />
+        <Spinner />
       </div>
     );
   }
