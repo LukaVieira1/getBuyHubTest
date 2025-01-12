@@ -1,4 +1,10 @@
-import { IMovieResponse, IMovieDetail, Genre } from "@/types/movie";
+import {
+  IMovieResponse,
+  IMovieDetail,
+  Genre,
+  IMovieVideosResponse,
+  IMovieVideo,
+} from "@/types/movie";
 import { api } from "@/providers/api";
 import { getGenderId } from "@/utils/moviesGenders";
 
@@ -78,6 +84,23 @@ export async function getMoviesByGenre(
       },
     });
     return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getMovieTrailer(id: number): Promise<IMovieVideo> {
+  try {
+    const { data } = await api.get<IMovieVideosResponse>(
+      `/movie/${id}/videos`,
+      {
+        params: {
+          language: "pt-BR",
+        },
+      }
+    );
+    return data.results[0];
   } catch (error) {
     console.error(error);
     throw error;
