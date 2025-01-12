@@ -5,6 +5,7 @@ import { getMovieTrailer } from "@/services/movie";
 import { IMovie } from "@/types/movie";
 import { Spinner } from "./Spinner";
 import ReactPlayer from "react-player/youtube";
+import { useUI } from "@/contexts/UIContext";
 
 interface MovieModalProps {
   movie: IMovie;
@@ -19,6 +20,11 @@ export default function MovieModal({
 }: MovieModalProps) {
   const [trailer, setTrailer] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { setIsModalOpen } = useUI();
+
+  const handleClose = () => {
+    onClose();
+  };
 
   useEffect(() => {
     setTrailer(null);
@@ -38,8 +44,11 @@ export default function MovieModal({
 
     if (isOpen) {
       fetchTrailer();
+      setIsModalOpen(true);
+    } else {
+      setIsModalOpen(false);
     }
-  }, [isOpen, movie?.id]);
+  }, [isOpen, movie?.id, setIsModalOpen]);
 
   return (
     <AnimatePresence>
@@ -49,7 +58,7 @@ export default function MovieModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          onClick={onClose}
+          onClick={handleClose}
           className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
         >
           <motion.div
