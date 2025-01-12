@@ -67,3 +67,24 @@ interface ISpokenLanguage {
   iso_639_1: string;
   name: string;
 }
+
+export type Genre =
+  | "Action"
+  | "Adventure"
+  | "Animation"
+  | "Comedy"
+  | "Crime"
+  | "Documentary"
+  | "Drama"
+  | "Family"
+  | "Fantasy"
+  | "History"
+  | "Horror"
+  | "Music"
+  | "Mystery"
+  | "Romance"
+  | "Science Fiction"
+  | "TV Movie"
+  | "Thriller"
+  | "War"
+  | "Western";
