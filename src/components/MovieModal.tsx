@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getMovieTrailer } from "@/services/movie";
 import { IMovie } from "@/types/movie";
 import { Spinner } from "./Spinner";
+import ReactPlayer from "react-player/youtube";
 
 interface MovieModalProps {
   movie: IMovie;
@@ -84,15 +85,37 @@ export default function MovieModal({
                 </div>
               ) : trailer ? (
                 <motion.div
-                  className="aspect-video"
+                  className="aspect-video relative overflow-hidden"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.4 }}
                 >
-                  <iframe
-                    src={`https://www.youtube.com/embed/${trailer}`}
-                    className="w-full h-full"
-                    allowFullScreen
+                  <div className="absolute inset-0 pointer-events-none" />
+                  <ReactPlayer
+                    url={`https://www.youtube.com/watch?v=${trailer}`}
+                    width="100%"
+                    height="100%"
+                    playing={true}
+                    controls={false}
+                    muted={false}
+                    loop={true}
+                    playsinline={true}
+                    stopOnUnmount={false}
+                    onPause={() => false}
+                    style={{ pointerEvents: "none" }}
+                    config={{
+                      playerVars: {
+                        modestbranding: 1,
+                        showinfo: 0,
+                        rel: 0,
+                        iv_load_policy: 3,
+                        controls: 0,
+                        disablekb: 1,
+                        fs: 0,
+                        playsinline: 1,
+                        autoplay: 1,
+                      },
+                    }}
                   />
                 </motion.div>
               ) : (
