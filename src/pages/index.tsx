@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPopularMovies } from "@/services/movie";
+import { getMoviesByGenre, getPopularMovies } from "@/services/movie";
 import { IMovie } from "@/types/movie";
 import MovieCarousel from "@/components/MovieCarousel";
 import { motion } from "framer-motion";
@@ -8,16 +8,44 @@ import Link from "next/link";
 
 export default function Home() {
   const [popularMovies, setPopularMovies] = useState<IMovie[]>([]);
+  const [fantasyMovies, setFantasyMovies] = useState<IMovie[]>([]);
+  const [comedyMovies, setComedyMovies] = useState<IMovie[]>([]);
+  const [dramaMovies, setDramaMovies] = useState<IMovie[]>([]);
+  const [horrorMovies, setHorrorMovies] = useState<IMovie[]>([]);
+  const [romanceMovies, setRomanceMovies] = useState<IMovie[]>([]);
+  const [documentaryMovies, setDocumentaryMovies] = useState<IMovie[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         setLoading(true);
-        const data = await getPopularMovies(1);
-        setPopularMovies(data.results);
+        const [
+          popularData,
+          fantasyData,
+          comedyData,
+          dramaData,
+          horrorData,
+          romanceData,
+          documentaryData,
+        ] = await Promise.all([
+          getPopularMovies(1),
+          getMoviesByGenre("Fantasy", 1),
+          getMoviesByGenre("Comedy", 1),
+          getMoviesByGenre("Drama", 1),
+          getMoviesByGenre("Horror", 1),
+          getMoviesByGenre("Romance", 1),
+          getMoviesByGenre("Documentary", 1),
+        ]);
+        setPopularMovies(popularData.results);
+        setFantasyMovies(fantasyData.results);
+        setComedyMovies(comedyData.results);
+        setDramaMovies(dramaData.results);
+        setHorrorMovies(horrorData.results);
+        setRomanceMovies(romanceData.results);
+        setDocumentaryMovies(documentaryData.results);
       } catch (error) {
-        console.error("Error fetching movies:", error);
+        console.error("Erro ao buscar filmes:", error);
       } finally {
         setLoading(false);
       }
@@ -114,7 +142,13 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="relative z-10 pt-8">
-        <MovieCarousel title="Filmes Populares" initialMovies={popularMovies} />
+        <MovieCarousel title="Populares" initialMovies={popularMovies} />
+        <MovieCarousel title="Fantasia" initialMovies={fantasyMovies} />
+        <MovieCarousel title="Comédia" initialMovies={comedyMovies} />
+        <MovieCarousel title="Drama" initialMovies={dramaMovies} />
+        <MovieCarousel title="Horror" initialMovies={horrorMovies} />
+        <MovieCarousel title="Romance" initialMovies={romanceMovies} />
+        <MovieCarousel title="Documentário" initialMovies={documentaryMovies} />
       </main>
     </div>
   );
