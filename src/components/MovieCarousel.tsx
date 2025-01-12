@@ -5,6 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { getPopularMovies } from "@/services/movie";
 import useEmblaCarousel from "embla-carousel-react";
 import MovieModal from "./MovieModal";
+import { useUI } from "@/contexts/UIContext";
 
 interface MovieCarouselProps {
   title: string;
@@ -23,6 +24,7 @@ export default function MovieCarousel({
   const preloadThreshold = 0.8;
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
+  const { setIsModalOpen } = useUI();
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: isFullyLoaded,
@@ -109,6 +111,11 @@ export default function MovieCarousel({
     };
   }, [emblaApi, isFullyLoaded]);
 
+  const handleSelectMovie = (movie: IMovie) => {
+    setSelectedMovie(movie);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="relative pl-4 md:pl-8 my-8">
       <motion.h2
@@ -135,7 +142,7 @@ export default function MovieCarousel({
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                onClick={() => setSelectedMovie(movie)}
+                onClick={() => handleSelectMovie(movie)}
               >
                 <div className="relative aspect-[2/3] rounded-lg overflow-hidden shadow-lg hover:z-10">
                   <img
