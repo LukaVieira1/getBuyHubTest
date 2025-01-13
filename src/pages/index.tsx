@@ -110,20 +110,38 @@ export default function Home() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 py-4 md:py-0 md:h-16">
             <motion.div
-              className="text-2xl font-bold text-red-600"
+              className="text-2xl font-bold text-red-600 flex items-center justify-between md:w-[140px]"
               whileHover={{ scale: 1.05 }}
             >
               MovieDB
+              <div className="flex md:hidden space-x-4">
+                <motion.button
+                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Início
+                </motion.button>
+                <motion.button
+                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Categorias
+                </motion.button>
+              </div>
             </motion.div>
-            <div className="flex-1 max-w-xl mx-4">
-              <SearchBar
-                onSearchResults={setSearchResults}
-                onSearchChange={setSearch}
-              />
+            <div className="w-full md:flex-1 md:flex md:justify-center">
+              <div className="w-full md:max-w-xl">
+                <SearchBar
+                  onSearchResults={setSearchResults}
+                  onSearchChange={setSearch}
+                />
+              </div>
             </div>
-            <div className="flex space-x-4">
+            <div className="hidden md:flex space-x-4 md:w-[140px] md:justify-end">
               <motion.button
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 whileHover={{ scale: 1.05 }}
@@ -206,7 +224,9 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className={`relative z-10 ${searchResults ? "pt-24" : "pt-8"}`}>
+      <main
+        className={`relative z-10 ${searchResults ? "pt-32 md:pt-24" : "pt-8"}`}
+      >
         <AnimatePresence mode="wait">
           {searchResults ? (
             <SearchResults movies={searchResults} searchTerm={search} />
