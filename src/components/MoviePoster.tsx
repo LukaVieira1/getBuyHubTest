@@ -12,6 +12,7 @@ export default function MoviePoster({
   className = "",
 }: MoviePosterProps) {
   const initials = useMemo(() => {
+    if (!title) return "";
     return title
       .split(" ")
       .map((word) => word[0])
@@ -34,7 +35,9 @@ export default function MoviePoster({
     <div
       className={`w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 ${className}`}
     >
-      <span className="text-4xl font-bold text-gray-400">{initials}</span>
+      <span className="text-4xl font-bold text-gray-400">
+        {initials || "..."}
+      </span>
     </div>
   );
 }
