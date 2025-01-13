@@ -110,13 +110,13 @@ export default function Home() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center gap-4 py-4 md:py-0 md:h-16">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-4 py-4 lg:py-0 lg:h-16">
             <motion.div
-              className="text-2xl font-bold text-red-600 flex items-center justify-between md:w-[140px]"
+              className="text-2xl font-bold text-red-600 flex items-center justify-between lg:w-[140px]"
               whileHover={{ scale: 1.05 }}
             >
               MovieDB
-              <div className="flex md:hidden space-x-4">
+              <div className="flex lg:hidden space-x-4">
                 <motion.button
                   className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   whileHover={{ scale: 1.05 }}
@@ -133,15 +133,15 @@ export default function Home() {
                 </motion.button>
               </div>
             </motion.div>
-            <div className="w-full md:flex-1 md:flex md:justify-center">
-              <div className="w-full md:max-w-xl">
+            <div className="w-full lg:flex-1 lg:flex lg:justify-center">
+              <div className="w-full lg:max-w-xl">
                 <SearchBar
                   onSearchResults={setSearchResults}
                   onSearchChange={setSearch}
                 />
               </div>
             </div>
-            <div className="hidden md:flex space-x-4 md:w-[140px] md:justify-end">
+            <div className="hidden lg:flex space-x-4 lg:w-[140px] lg:justify-end">
               <motion.button
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 whileHover={{ scale: 1.05 }}
