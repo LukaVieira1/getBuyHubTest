@@ -11,9 +11,11 @@ import { IMovie } from "@/types/movie";
 // Components
 import MovieCarousel from "@/components/MovieCarousel";
 import { Spinner } from "@/components/Spinner";
+import SearchBar from "@/components/SearchBar";
+import SearchResults from "@/components/SearchResults";
 
 // Framer Motion
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Heroicons
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
@@ -30,6 +32,8 @@ export default function Home() {
   const [horrorMovies, setHorrorMovies] = useState<IMovie[]>([]);
   const [romanceMovies, setRomanceMovies] = useState<IMovie[]>([]);
   const [documentaryMovies, setDocumentaryMovies] = useState<IMovie[]>([]);
+  const [searchResults, setSearchResults] = useState<IMovie[] | null>(null);
+  const [search, setSearch] = useState("");
 
   const [loading, setLoading] = useState(true);
 
@@ -113,6 +117,12 @@ export default function Home() {
             >
               MovieDB
             </motion.div>
+            <div className="flex-1 max-w-xl mx-4">
+              <SearchBar
+                onSearchResults={setSearchResults}
+                onSearchChange={setSearch}
+              />
+            </div>
             <div className="flex space-x-4">
               <motion.button
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -134,7 +144,11 @@ export default function Home() {
       </motion.nav>
 
       {/* Header */}
-      <header className="relative h-[70vh] mb-8 pt-16">
+      <header
+        className={`relative h-[70vh] mb-8 pt-16 ${
+          searchResults ? "hidden" : ""
+        }`}
+      >
         {popularMovies[0] && (
           <>
             <div className="absolute inset-0">
@@ -192,14 +206,25 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 pt-8">
-        <MovieCarousel title="Populares" initialMovies={popularMovies} />
-        <MovieCarousel title="Fantasia" initialMovies={fantasyMovies} />
-        <MovieCarousel title="Comédia" initialMovies={comedyMovies} />
-        <MovieCarousel title="Drama" initialMovies={dramaMovies} />
-        <MovieCarousel title="Horror" initialMovies={horrorMovies} />
-        <MovieCarousel title="Romance" initialMovies={romanceMovies} />
-        <MovieCarousel title="Documentário" initialMovies={documentaryMovies} />
+      <main className={`relative z-10 ${searchResults ? "pt-24" : "pt-8"}`}>
+        <AnimatePresence mode="wait">
+          {searchResults ? (
+            <SearchResults movies={searchResults} searchTerm={search} />
+          ) : (
+            <>
+              <MovieCarousel title="Populares" initialMovies={popularMovies} />
+              <MovieCarousel title="Fantasia" initialMovies={fantasyMovies} />
+              <MovieCarousel title="Comédia" initialMovies={comedyMovies} />
+              <MovieCarousel title="Drama" initialMovies={dramaMovies} />
+              <MovieCarousel title="Horror" initialMovies={horrorMovies} />
+              <MovieCarousel title="Romance" initialMovies={romanceMovies} />
+              <MovieCarousel
+                title="Documentário"
+                initialMovies={documentaryMovies}
+              />
+            </>
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );
