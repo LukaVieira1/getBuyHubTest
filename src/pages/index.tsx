@@ -163,7 +163,7 @@ export default function Home() {
 
       {/* Header */}
       <header
-        className={`relative h-[70vh] mb-8 pt-16 ${
+        className={`relative h-[70vh] mb-8 pt-16 max-[325px]:mt-36 max-[375px]:mt-24 ${
           searchResults ? "hidden" : ""
         }`}
       >
