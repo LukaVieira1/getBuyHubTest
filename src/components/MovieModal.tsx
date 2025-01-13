@@ -6,6 +6,8 @@ import { IMovie } from "@/types/movie";
 import { Spinner } from "./Spinner";
 import ReactPlayer from "react-player/youtube";
 import { useUI } from "@/contexts/UIContext";
+import Link from "next/link";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
 interface MovieModalProps {
   movie: IMovie;
@@ -59,7 +61,7 @@ export default function MovieModal({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           onClick={handleClose}
-          className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 overflow-y-auto"
         >
           <motion.div
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -70,7 +72,7 @@ export default function MovieModal({
               ease: [0.16, 1, 0.3, 1],
             }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-gray-900 rounded-lg overflow-hidden w-full max-w-4xl"
+            className="bg-gray-900 rounded-lg overflow-hidden w-full max-w-4xl my-auto"
             layoutId={`movie-${movie.id}`}
           >
             <div className="relative">
@@ -83,7 +85,7 @@ export default function MovieModal({
                   duration: 0.3,
                   ease: "backOut",
                 }}
-                className="absolute right-2 top-2 z-10 p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors"
+                className="absolute right-2 top-2 z-10 p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors md:right-4 md:top-4"
               >
                 <XMarkIcon className="w-6 h-6 text-white" />
               </motion.button>
@@ -94,7 +96,7 @@ export default function MovieModal({
                 </div>
               ) : trailer ? (
                 <motion.div
-                  className="aspect-video relative overflow-hidden"
+                  className="aspect-video relative overflow-hidden max-h-[70vh] md:max-h-none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.4 }}
@@ -129,7 +131,7 @@ export default function MovieModal({
                 </motion.div>
               ) : (
                 <motion.div
-                  className="relative bg-gray-900 overflow-hidden min-h-[400px] md:min-h-[500px]"
+                  className="relative bg-gray-900 overflow-hidden min-h-[300px] md:min-h-[400px] max-h-[70vh]"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.4 }}
@@ -158,7 +160,7 @@ export default function MovieModal({
             </div>
 
             <motion.div
-              className="p-6"
+              className="p-4 md:p-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -167,7 +169,19 @@ export default function MovieModal({
                 ease: "easeOut",
               }}
             >
-              <h2 className="text-2xl font-bold mb-2">{movie.title}</h2>
+              <div className="flex items-center gap-4 mb-2">
+                <h2 className="text-xl md:text-2xl font-bold">{movie.title}</h2>
+                <Link href={`/movie/${movie.id}`}>
+                  <motion.button
+                    className="inline-flex items-center text-gray-400 hover:text-white transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleClose}
+                  >
+                    <InformationCircleIcon className="w-5 h-5" /> Saiba mais
+                  </motion.button>
+                </Link>
+              </div>
               <p className="text-gray-400 mb-4">
                 {new Date(movie.release_date).getFullYear()} •{" "}
                 {movie.vote_average.toFixed(1)} ⭐
