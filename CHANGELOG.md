@@ -21,6 +21,7 @@
 - Optimized component loading during splash screen
 - Improved type structure for cast members
 - Improve code organization and readability
+- Added API proxy to resolve CORS issues in production
 
 ## [0.3.0] - 2024-03-19
 
