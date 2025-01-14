@@ -67,3 +67,62 @@ interface ISpokenLanguage {
   iso_639_1: string;
   name: string;
 }
+
+export interface IMovieVideosResponse {
+  id: number;
+  results: IMovieVideo[];
+}
+
+export interface IMovieVideo {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
+}
+
+export type Genre =
+  | "Action"
+  | "Adventure"
+  | "Animation"
+  | "Comedy"
+  | "Crime"
+  | "Documentary"
+  | "Drama"
+  | "Family"
+  | "Fantasy"
+  | "History"
+  | "Horror"
+  | "Music"
+  | "Mystery"
+  | "Romance"
+  | "Science Fiction"
+  | "TV Movie"
+  | "Thriller"
+  | "War"
+  | "Western";
+
+export interface ICastResponse {
+  id: number;
+  cast: ICastMember[];
+}
+
+export interface ICastMember {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string | null;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
+}

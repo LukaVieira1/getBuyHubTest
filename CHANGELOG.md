@@ -1,5 +1,48 @@
 # Changelog
 
+## [1.0.0] - 2025-01-14
+
+### Added
+
+- Animated splash screen with WikiMovies logo
+- Sound effect on splash screen
+- Cast section on movie page
+- Edge gradients for carousel
+
+### Changed
+
+- Refactored navigation system to clear search on return
+- Optimized movie page data loading using Promise.all
+
+### Technical
+
+- Implemented EmblaCarousel for better performance
+- Added audio preload for splash screen
+- Optimized component loading during splash screen
+- Improved type structure for cast members
+- Improve code organization and readability
+
+## [0.3.0] - 2024-03-19
+
+### Updated
+
+- Next.js from 13.1.6 to 14.1.3
+- TypeScript from 4.9.4 to 5.4.2
+- @types/node from 18.11.18 to 20.11.25
+- @types/react from 18.0.27 to 18.2.64
+- @types/react-dom from 18.0.10 to 18.2.21
+
+### Added
+
+- Support for Next.js 14 features
+- Latest TypeScript features and improvements
+- Netflix-style carousel component with Framer Motion
+- Added @heroicons/react for UI icons
+- Smooth animations and transitions
+- Responsive design for mobile and desktop
+- Integrated embla-carousel for improved carousel functionality
+- Simplified carousel logic with better touch support
+
 ## [0.2.0] - 2025-01-09
 
 ### Added
@@ -41,10 +84,10 @@
 
 #### Added
 
-- typescript@4.9.4
-- @types/react@18.0.27
-- @types/react-dom@18.0.10
-- @types/node@18.11.18
+- typescript@5.4.2
+- @types/react@18.2.64
+- @types/react-dom@18.2.21
+- @types/node@20.11.25
 - axios@1.3.2
 - tailwindcss@3.3.3
 - postcss@8.4.31
