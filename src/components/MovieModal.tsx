@@ -8,6 +8,7 @@ import ReactPlayer from "react-player/youtube";
 import { useUI } from "@/contexts/UIContext";
 import Link from "next/link";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import MoviePoster from "./MoviePoster";
 
 interface MovieModalProps {
   movie: IMovie;
@@ -136,24 +137,10 @@ export default function MovieModal({
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.4 }}
                 >
-                  <img
-                    src={
-                      movie.backdrop_path
-                        ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
-                        : `https://image.tmdb.org/t/p/original${movie.poster_path}`
-                    }
-                    alt={movie.title}
+                  <MoviePoster
+                    title={movie.title}
+                    posterPath={movie.poster_path}
                     className="absolute inset-0 w-full h-full object-cover object-center transform scale-110 blur-sm brightness-50"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/90 to-transparent" />
-                  <img
-                    src={
-                      movie.poster_path
-                        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                        : `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
-                    }
-                    alt={movie.title}
-                    className="relative mx-auto h-[400px] md:h-[500px] w-auto object-contain rounded-lg shadow-2xl"
                   />
                 </motion.div>
               )}
