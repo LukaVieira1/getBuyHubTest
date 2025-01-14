@@ -4,6 +4,8 @@ import {
   Genre,
   IMovieVideosResponse,
   IMovieVideo,
+  ICastResponse,
+  ICastMember,
 } from "@/types/movie";
 import { api } from "@/providers/api";
 import { getGenderId } from "@/utils/moviesGenders";
@@ -101,6 +103,20 @@ export async function getMovieTrailer(id: number): Promise<IMovieVideo> {
       }
     );
     return data.results[0];
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getMovieCredits(id: string): Promise<ICastMember[]> {
+  try {
+    const { data } = await api.get<ICastResponse>(`/movie/${id}/credits`, {
+      params: {
+        language: "pt-BR",
+      },
+    });
+    return data.cast;
   } catch (error) {
     console.error(error);
     throw error;
