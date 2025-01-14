@@ -1,20 +1,33 @@
+// Next.js
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
+
+// Services
 import { getMovie, getSimilarMovies, getMovieCredits } from "@/services/movie";
+
+// Components
 import useEmblaCarousel from "embla-carousel-react";
 import MoviePoster from "@/components/MoviePoster";
 import CastMember from "@/components/CastMember";
-import Link from "next/link";
+import { Spinner } from "@/components/Spinner";
+
+// Utils
 import { formatLongDate } from "@/utils/dateFormat";
+import { removeNonActors } from "@/utils/moviesActors";
+
+// Types
 import { IMovie, IMovieDetail, ICastMember } from "@/types/movie";
+
+// Framer Motion
 import { motion } from "framer-motion";
+
+// Icons
 import {
   ArrowLeftIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
-import { removeNonActors } from "@/utils/moviesActors";
-import { Spinner } from "@/components/Spinner";
 
 export default function MoviePage() {
   const [movie, setMovie] = useState<IMovieDetail>({} as IMovieDetail);

@@ -22,6 +22,8 @@ import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
 // Hooks
 import { useScrollPosition } from "@/hooks/useScrollPosition";
+
+// Contexts
 import { useUI } from "@/contexts/UIContext";
 
 export default function Home() {
