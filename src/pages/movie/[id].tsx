@@ -1,17 +1,59 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { getMovie, getSimilarMovies } from "@/services/movie";
+import { useEffect, useState, useCallback } from "react";
+import { getMovie, getSimilarMovies, getMovieCredits } from "@/services/movie";
+import useEmblaCarousel from "embla-carousel-react";
 import MoviePoster from "@/components/MoviePoster";
+import CastMember from "@/components/CastMember";
 import Link from "next/link";
 import { formatLongDate } from "@/utils/dateFormat";
-import { IMovie, IMovieDetail } from "@/types/movie";
+import { IMovie, IMovieDetail, ICastMember } from "@/types/movie";
 import { motion } from "framer-motion";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
+import { removeNonActors } from "@/utils/moviesActors";
 
 export default function MoviePage() {
   const [movie, setMovie] = useState<IMovieDetail>({} as IMovieDetail);
   const [similarMovies, setSimilarMovies] = useState<IMovie[]>([]);
+  const [actors, setActors] = useState<ICastMember[]>([]);
   const [loading, setLoading] = useState(true);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    containScroll: false,
+    dragFree: true,
+    loop: false,
+  });
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setCanScrollPrev(emblaApi.canScrollPrev());
+      setCanScrollNext(emblaApi.canScrollNext());
+    };
+
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    onSelect();
+
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi]);
 
   const router = useRouter();
   const movieId = router.query.id as string;
@@ -20,11 +62,20 @@ export default function MoviePage() {
     if (movieId) {
       const request = async () => {
         setLoading(true);
-        const movieData = await getMovie(movieId);
-        setMovie(movieData);
-        const similarData = await getSimilarMovies(movieId);
-        setSimilarMovies(similarData.results);
-        setLoading(false);
+        try {
+          const [movieData, similarData, creditsData] = await Promise.all([
+            getMovie(movieId),
+            getSimilarMovies(movieId),
+            getMovieCredits(movieId),
+          ]);
+          setMovie(movieData);
+          setSimilarMovies(similarData.results);
+          setActors(removeNonActors(creditsData));
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setLoading(false);
+        }
       };
       request();
     }
@@ -33,7 +84,6 @@ export default function MoviePage() {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="relative">
-        {/* Background Image */}
         <div className="absolute inset-0 h-[50vh]">
           <img
             src={
@@ -105,7 +155,50 @@ export default function MoviePage() {
             </motion.div>
           </div>
 
-          {/* Similar Movies */}
+          {actors.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mt-8 relative group"
+            >
+              <h2 className="text-xl font-semibold mb-4">Elenco</h2>
+              <div className="relative">
+                <div className="overflow-hidden -m-2" ref={emblaRef}>
+                  <div className="flex gap-4 px-16">
+                    {actors.map((actor) => (
+                      <CastMember key={actor.id} member={actor} />
+                    ))}
+                  </div>
+                </div>
+                <div className="absolute -right-2 top-0 bottom-0 w-16 bg-gradient-to-l from-gray-900 to-transparent pointer-events-none" />
+                <div className="absolute -left-2 top-0 bottom-0 w-16 bg-gradient-to-r from-gray-900 to-transparent pointer-events-none" />
+              </div>
+              <button
+                onClick={scrollPrev}
+                className={`absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 p-3 rounded-full transition-all duration-300 -translate-x-4 group-hover:translate-x-0 z-10 hidden md:block ${
+                  canScrollPrev
+                    ? "opacity-0 group-hover:opacity-100"
+                    : "opacity-0"
+                }`}
+                disabled={!canScrollPrev}
+              >
+                <ChevronLeftIcon className="h-6 w-6 text-white" />
+              </button>
+              <button
+                onClick={scrollNext}
+                className={`absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 p-3 rounded-full transition-all duration-300 translate-x-4 group-hover:translate-x-0 z-10 hidden md:block ${
+                  canScrollNext
+                    ? "opacity-0 group-hover:opacity-100"
+                    : "opacity-0"
+                }`}
+                disabled={!canScrollNext}
+              >
+                <ChevronRightIcon className="h-6 w-6 text-white" />
+              </button>
+            </motion.div>
+          )}
+
           {similarMovies.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
