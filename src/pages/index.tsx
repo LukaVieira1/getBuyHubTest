@@ -79,6 +79,12 @@ export default function Home() {
     fetchMovies();
   }, []);
 
+  const handleHomeClick = () => {
+    setSearchResults(null);
+    setSearch("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -115,22 +121,23 @@ export default function Home() {
               className="text-2xl font-bold text-red-600 flex items-center justify-between lg:w-[140px]"
               whileHover={{ scale: 1.05 }}
             >
-              MovieDB
+              WikiMovies
               <div className="flex lg:hidden space-x-4">
                 <motion.button
                   className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={handleHomeClick}
                 >
                   Início
                 </motion.button>
-                <motion.button
+                {/* <motion.button
                   className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   Categorias
-                </motion.button>
+                </motion.button> */}
               </div>
             </motion.div>
             <div className="w-full lg:flex-1 lg:flex lg:justify-center">
@@ -138,6 +145,7 @@ export default function Home() {
                 <SearchBar
                   onSearchResults={setSearchResults}
                   onSearchChange={setSearch}
+                  value={search}
                 />
               </div>
             </div>
@@ -146,16 +154,17 @@ export default function Home() {
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={handleHomeClick}
               >
                 Início
               </motion.button>
-              <motion.button
+              {/* <motion.button
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 Categorias
-              </motion.button>
+              </motion.button> */}
             </div>
           </div>
         </div>
