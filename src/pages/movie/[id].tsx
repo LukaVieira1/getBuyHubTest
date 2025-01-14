@@ -14,6 +14,7 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { removeNonActors } from "@/utils/moviesActors";
+import { Spinner } from "@/components/Spinner";
 
 export default function MoviePage() {
   const [movie, setMovie] = useState<IMovieDetail>({} as IMovieDetail);
@@ -81,6 +82,14 @@ export default function MoviePage() {
     }
   }, [movieId]);
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="relative">
@@ -97,7 +106,6 @@ export default function MoviePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/60 to-gray-900" />
         </div>
 
-        {/* Content */}
         <div className="relative pt-8 px-4 md:px-8 max-w-7xl mx-auto">
           <Link href="/">
             <motion.button
