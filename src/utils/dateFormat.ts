@@ -14,7 +14,7 @@ export const formatLongDate = (
 ): string => {
   if (!date) return "Data não informada";
 
-  const { locale = "pt-br", format = "DD [de] MMMM [de] YYYY" } = options;
+  const { locale = "pt-br", format = "MM/YYYY" } = options;
 
   return moment(date).locale(locale).format(format);
 };

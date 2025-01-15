@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { IMovie } from "@/types/movie";
 import { getMoviesByKeywords } from "@/services/movie";
+import { useTranslation } from "react-i18next";
 
 interface SearchBarProps {
   onSearchResults: (results: IMovie[] | null) => void;
@@ -17,6 +18,7 @@ export default function SearchBar({
 }: SearchBarProps) {
   const [isSearching, setIsSearching] = useState(false);
   const searchTimeout = useRef<NodeJS.Timeout>();
+  const { t } = useTranslation();
 
   const handleSearch = async (term: string) => {
     if (term.length === 0) {
@@ -26,7 +28,7 @@ export default function SearchBar({
 
     setIsSearching(true);
     try {
-      const data = await getMoviesByKeywords(term);
+      const data = await getMoviesByKeywords(term, t("param.language"));
       onSearchResults(data.results);
     } catch (error) {
       console.error("Erro ao buscar filmes:", error);
@@ -56,7 +58,7 @@ export default function SearchBar({
           type="text"
           value={value}
           onChange={handleChange}
-          placeholder="Buscar filmes..."
+          placeholder={t("search.placeholder")}
           className="w-full pl-10 pr-4 py-2 bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 text-white placeholder-gray-400"
         />
       </div>

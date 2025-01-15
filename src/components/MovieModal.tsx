@@ -9,6 +9,7 @@ import { useUI } from "@/contexts/UIContext";
 import Link from "next/link";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import MoviePoster from "./MoviePoster";
+import { useTranslation } from "react-i18next";
 
 interface MovieModalProps {
   movie: IMovie;
@@ -24,6 +25,7 @@ export default function MovieModal({
   const [trailer, setTrailer] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { setIsModalOpen } = useUI();
+  const { t } = useTranslation();
 
   const handleClose = () => {
     onClose();
@@ -34,7 +36,7 @@ export default function MovieModal({
     const fetchTrailer = async () => {
       setIsLoading(true);
       try {
-        const trailer = await getMovieTrailer(movie.id);
+        const trailer = await getMovieTrailer(movie.id, t("param.language"));
         if (trailer) {
           setTrailer(trailer.key);
         }
@@ -160,12 +162,14 @@ export default function MovieModal({
                 <h2 className="text-xl md:text-2xl font-bold">{movie.title}</h2>
                 <Link href={`/movie/${movie.id}`}>
                   <motion.button
-                    className="inline-flex items-center text-gray-400 hover:text-white transition-colors"
+                    className="inline-flex items-center text-gray-400 hover:text-white transition-colors gap-1 "
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleClose}
                   >
-                    <InformationCircleIcon className="w-5 h-5" /> Saiba mais
+                    <InformationCircleIcon className="w-5 h-5  transition-colors" />
+
+                    {t("movieModal.moreInfo")}
                   </motion.button>
                 </Link>
               </div>
