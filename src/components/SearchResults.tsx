@@ -3,6 +3,7 @@ import { IMovie } from "@/types/movie";
 import MovieModal from "./MovieModal";
 import { useState } from "react";
 import MoviePoster from "./MoviePoster";
+import { useTranslation } from "react-i18next";
 
 interface SearchResultsProps {
   movies: IMovie[];
@@ -14,6 +15,7 @@ export default function SearchResults({
   searchTerm,
 }: SearchResultsProps) {
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -57,11 +59,9 @@ export default function SearchResults({
             className="text-center"
           >
             <h2 className="text-2xl font-bold mb-4">
-              Não encontramos resultados para "{searchTerm}"
+              {t("search.noResults")} "{searchTerm}"
             </h2>
-            <p className="text-gray-400">
-              Tente buscar por outro título ou verifique a ortografia
-            </p>
+            <p className="text-gray-400">{t("search.tryAgain")}</p>
           </motion.div>
         )}
       </motion.div>

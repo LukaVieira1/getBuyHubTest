@@ -6,7 +6,7 @@ import { getPopularMovies } from "@/services/movie";
 import useEmblaCarousel from "embla-carousel-react";
 import MovieModal from "./MovieModal";
 import { useUI } from "@/contexts/UIContext";
-
+import { useTranslation } from "react-i18next";
 interface MovieCarouselProps {
   title: string;
   initialMovies: IMovie[];
@@ -25,6 +25,8 @@ export default function MovieCarousel({
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
   const { setIsModalOpen } = useUI();
+
+  const { t } = useTranslation();
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: isFullyLoaded,
@@ -57,7 +59,7 @@ export default function MovieCarousel({
     try {
       setLoading(true);
       const nextPage = currentPage + 1;
-      const data = await getPopularMovies(nextPage);
+      const data = await getPopularMovies(nextPage, t("param.language"));
       setMovies((prev) => [...prev, ...data.results]);
       setCurrentPage(nextPage);
 

@@ -1,0 +1,68 @@
+{
+  "languageSelector": {
+    "title": "Selecione seu idioma",
+    "languages": {
+      "pt-BR": "Português",
+      "en-US": "English"
+    }
+  },
+  "movieCard": {
+    "release": "Lançamento:"
+  },
+  "movieModal": {
+    "moreInfo": "Mais informações",
+    "releaseYear": "Ano de lançamento",
+    "rating": "Avaliação",
+    "cast": "Elenco"
+  },
+  "moviePage": {
+    "overview": "Sinopse",
+    "cast": "Elenco",
+    "relatedMovies": "Filmes Relacionados",
+    "backToHome": "Voltar"
+  },
+  "home": {
+    "home": "Início",
+    "categories": "Categorias",
+    "moreInfo": "Mais informações"
+  },
+  "categories": {
+    "popular": "Populares",
+    "action": "Ação",
+    "adventure": "Aventura",
+    "animation": "Animação",
+    "comedy": "Comédia",
+    "crime": "Crime",
+    "documentary": "Documentário",
+    "drama": "Drama",
+    "family": "Família",
+    "fantasy": "Fantasia",
+    "history": "História",
+    "horror": "Terror",
+    "music": "Música",
+    "mystery": "Mistério",
+    "romance": "Romance",
+    "scienceFiction": "Ficção Científica",
+    "tvMovie": "Filme de TV",
+    "thriller": "Suspense",
+    "war": "Guerra",
+    "western": "Far West"
+  },
+  "search": {
+    "placeholder": "Buscar filmes...",
+    "noResults": "Não encontramos resultados para",
+    "tryAgain": "Tente buscar por outro título ou verifique a ortografia",
+    "searching": "Buscando..."
+  },
+  "splash": {
+    "title": "WikiMovies",
+    "subtitle": "lukavieira.tech"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro ao carregar"
+  },
+  "param": {
+    "language": "pt-BR"
+  }
+}

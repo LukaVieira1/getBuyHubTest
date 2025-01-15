@@ -26,6 +26,9 @@ import { useScrollPosition } from "@/hooks/useScrollPosition";
 // Contexts
 import { useUI } from "@/contexts/UIContext";
 
+// i18n
+import { useTranslation } from "react-i18next";
+
 export default function Home() {
   const [popularMovies, setPopularMovies] = useState<IMovie[]>([]);
   const [fantasyMovies, setFantasyMovies] = useState<IMovie[]>([]);
@@ -43,6 +46,8 @@ export default function Home() {
   const isScrolled = scrollPosition > 100;
   const { isModalOpen } = useUI();
 
+  const { t } = useTranslation("common");
+
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -56,13 +61,13 @@ export default function Home() {
           romanceData,
           documentaryData,
         ] = await Promise.all([
-          getPopularMovies(1),
-          getMoviesByGenre("Fantasy", 1),
-          getMoviesByGenre("Comedy", 1),
-          getMoviesByGenre("Drama", 1),
-          getMoviesByGenre("Horror", 1),
-          getMoviesByGenre("Romance", 1),
-          getMoviesByGenre("Documentary", 1),
+          getPopularMovies(1, t("param.language")),
+          getMoviesByGenre("Fantasy", 1, t("param.language")),
+          getMoviesByGenre("Comedy", 1, t("param.language")),
+          getMoviesByGenre("Drama", 1, t("param.language")),
+          getMoviesByGenre("Horror", 1, t("param.language")),
+          getMoviesByGenre("Romance", 1, t("param.language")),
+          getMoviesByGenre("Documentary", 1, t("param.language")),
         ]);
         setPopularMovies(popularData.results);
         setFantasyMovies(fantasyData.results);
@@ -131,14 +136,14 @@ export default function Home() {
                   whileTap={{ scale: 0.95 }}
                   onClick={handleHomeClick}
                 >
-                  Início
+                  {t("home.home")}
                 </motion.button>
                 {/* <motion.button
                   className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Categorias
+                  {t("home.categories")}
                 </motion.button> */}
               </div>
             </motion.div>
@@ -158,14 +163,14 @@ export default function Home() {
                 whileTap={{ scale: 0.95 }}
                 onClick={handleHomeClick}
               >
-                Início
+                {t("home.home")}
               </motion.button>
               {/* <motion.button
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Categorias
+                {t("home.categories")}
               </motion.button> */}
             </div>
           </div>
@@ -225,7 +230,7 @@ export default function Home() {
                 <Link href={`/movie/${popularMovies[0].id}`}>
                   <button className="mt-4 inline-flex items-center px-6 py-3 rounded-lg border-2 border-white/20 hover:border-white bg-black/30 hover:bg-black/50 backdrop-blur-sm transition-all duration-300 group">
                     <InformationCircleIcon className="w-5 h-5 mr-2 group-hover:text-red-500 transition-colors" />
-                    <span className="font-medium">Mais informações</span>
+                    <span className="font-medium">{t("home.moreInfo")}</span>
                   </button>
                 </Link>
               </motion.div>
@@ -243,14 +248,32 @@ export default function Home() {
             <SearchResults movies={searchResults} searchTerm={search} />
           ) : (
             <>
-              <MovieCarousel title="Populares" initialMovies={popularMovies} />
-              <MovieCarousel title="Fantasia" initialMovies={fantasyMovies} />
-              <MovieCarousel title="Comédia" initialMovies={comedyMovies} />
-              <MovieCarousel title="Drama" initialMovies={dramaMovies} />
-              <MovieCarousel title="Horror" initialMovies={horrorMovies} />
-              <MovieCarousel title="Romance" initialMovies={romanceMovies} />
               <MovieCarousel
-                title="Documentário"
+                title={t("categories.popular")}
+                initialMovies={popularMovies}
+              />
+              <MovieCarousel
+                title={t("categories.fantasy")}
+                initialMovies={fantasyMovies}
+              />
+              <MovieCarousel
+                title={t("categories.comedy")}
+                initialMovies={comedyMovies}
+              />
+              <MovieCarousel
+                title={t("categories.drama")}
+                initialMovies={dramaMovies}
+              />
+              <MovieCarousel
+                title={t("categories.horror")}
+                initialMovies={horrorMovies}
+              />
+              <MovieCarousel
+                title={t("categories.romance")}
+                initialMovies={romanceMovies}
+              />
+              <MovieCarousel
+                title={t("categories.documentary")}
                 initialMovies={documentaryMovies}
               />
             </>

@@ -11,12 +11,13 @@ import { api } from "@/providers/api";
 import { getGenderId } from "@/utils/moviesGenders";
 
 export async function getPopularMovies(
-  page: number = 1
+  page: number = 1,
+  language: string
 ): Promise<IMovieResponse> {
   try {
     const { data } = await api.get<IMovieResponse>(`/movie/popular`, {
       params: {
-        language: "pt-BR",
+        language,
         page,
       },
     });
@@ -28,13 +29,14 @@ export async function getPopularMovies(
 }
 
 export async function getMoviesByKeywords(
-  query: string
+  query: string,
+  language: string
 ): Promise<IMovieResponse> {
   try {
     const { data } = await api.get<IMovieResponse>("/search/movie", {
       params: {
         query,
-        language: "pt-BR",
+        language,
       },
     });
     return data;
@@ -44,11 +46,14 @@ export async function getMoviesByKeywords(
   }
 }
 
-export async function getMovie(id: string): Promise<IMovieDetail> {
+export async function getMovie(
+  id: string,
+  language: string
+): Promise<IMovieDetail> {
   try {
     const { data } = await api.get<IMovieDetail>(`/movie/${id}`, {
       params: {
-        language: "pt-BR",
+        language,
       },
     });
     return data;
@@ -58,11 +63,14 @@ export async function getMovie(id: string): Promise<IMovieDetail> {
   }
 }
 
-export async function getSimilarMovies(id: string): Promise<IMovieResponse> {
+export async function getSimilarMovies(
+  id: string,
+  language: string
+): Promise<IMovieResponse> {
   try {
     const { data } = await api.get<IMovieResponse>(`/movie/${id}/similar`, {
       params: {
-        language: "pt-BR",
+        language,
       },
     });
     return data;
@@ -74,14 +82,15 @@ export async function getSimilarMovies(id: string): Promise<IMovieResponse> {
 
 export async function getMoviesByGenre(
   genre: Genre,
-  page: number = 1
+  page: number = 1,
+  language: string
 ): Promise<IMovieResponse> {
   const genreId = getGenderId(genre);
   try {
     const { data } = await api.get<IMovieResponse>(`/discover/movie`, {
       params: {
         with_genres: genreId,
-        language: "pt-BR",
+        language,
         page,
       },
     });
@@ -92,13 +101,16 @@ export async function getMoviesByGenre(
   }
 }
 
-export async function getMovieTrailer(id: number): Promise<IMovieVideo> {
+export async function getMovieTrailer(
+  id: number,
+  language: string
+): Promise<IMovieVideo> {
   try {
     const { data } = await api.get<IMovieVideosResponse>(
       `/movie/${id}/videos`,
       {
         params: {
-          language: "pt-BR",
+          language,
         },
       }
     );
@@ -109,11 +121,14 @@ export async function getMovieTrailer(id: number): Promise<IMovieVideo> {
   }
 }
 
-export async function getMovieCredits(id: string): Promise<ICastMember[]> {
+export async function getMovieCredits(
+  id: string,
+  language: string
+): Promise<ICastMember[]> {
   try {
     const { data } = await api.get<ICastResponse>(`/movie/${id}/credits`, {
       params: {
-        language: "pt-BR",
+        language,
       },
     });
     return data.cast;

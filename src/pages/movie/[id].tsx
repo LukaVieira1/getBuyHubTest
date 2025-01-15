@@ -29,7 +29,11 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 
+// i18n
+import { useTranslation } from "react-i18next";
+
 export default function MoviePage() {
+  const { t } = useTranslation();
   const [movie, setMovie] = useState<IMovieDetail>({} as IMovieDetail);
   const [similarMovies, setSimilarMovies] = useState<IMovie[]>([]);
   const [actors, setActors] = useState<ICastMember[]>([]);
@@ -72,28 +76,27 @@ export default function MoviePage() {
   const router = useRouter();
   const movieId = router.query.id as string;
 
-  useEffect(() => {
-    if (movieId) {
-      const request = async () => {
-        setLoading(true);
-        try {
-          const [movieData, similarData, creditsData] = await Promise.all([
-            getMovie(movieId),
-            getSimilarMovies(movieId),
-            getMovieCredits(movieId),
-          ]);
-          setMovie(movieData);
-          setSimilarMovies(similarData.results);
-          setActors(removeNonActors(creditsData));
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      request();
+  const fetchMovieData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [movieData, similarData, creditsData] = await Promise.all([
+        getMovie(movieId, t("param.language")),
+        getSimilarMovies(movieId, t("param.language")),
+        getMovieCredits(movieId, t("param.language")),
+      ]);
+      setMovie(movieData);
+      setSimilarMovies(similarData.results);
+      setActors(removeNonActors(creditsData));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   }, [movieId]);
+
+  useEffect(() => {
+    fetchMovieData();
+  }, [fetchMovieData]);
 
   if (loading) {
     return (
@@ -127,7 +130,7 @@ export default function MoviePage() {
               whileTap={{ scale: 0.95 }}
             >
               <ArrowLeftIcon className="w-5 h-5 mr-2" />
-              Voltar
+              {t("moviePage.backToHome")}
             </motion.button>
           </Link>
 
@@ -183,7 +186,9 @@ export default function MoviePage() {
               transition={{ delay: 0.3 }}
               className="mt-8 relative group"
             >
-              <h2 className="text-xl font-semibold mb-4">Elenco</h2>
+              <h2 className="text-xl font-semibold mb-4">
+                {t("moviePage.cast")}
+              </h2>
               <div className="relative">
                 <div className="overflow-hidden -m-2" ref={emblaRef}>
                   <div className="flex gap-4 px-16">
@@ -227,7 +232,9 @@ export default function MoviePage() {
               transition={{ delay: 0.4 }}
               className="mt-16 mb-8"
             >
-              <h2 className="text-2xl font-bold mb-8">Filmes Relacionados</h2>
+              <h2 className="text-2xl font-bold mb-8">
+                {t("moviePage.relatedMovies")}
+              </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {similarMovies.map((movie) => (
                   <Link key={movie.id} href={`/movie/${movie.id}`}>
