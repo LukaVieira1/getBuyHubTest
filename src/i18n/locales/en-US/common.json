@@ -1,0 +1,68 @@
+{
+  "languageSelector": {
+    "title": "Select your language",
+    "languages": {
+      "pt-BR": "Portuguese",
+      "en-US": "English"
+    }
+  },
+  "movieCard": {
+    "release": "Release date:"
+  },
+  "movieModal": {
+    "moreInfo": "More information",
+    "releaseYear": "Release year",
+    "rating": "Rating",
+    "cast": "Cast"
+  },
+  "moviePage": {
+    "overview": "Overview",
+    "cast": "Cast",
+    "relatedMovies": "Related movies",
+    "backToHome": "Back"
+  },
+  "home": {
+    "home": "Home",
+    "categories": "Categories",
+    "moreInfo": "More information"
+  },
+  "categories": {
+    "popular": "Popular",
+    "action": "Action",
+    "adventure": "Adventure",
+    "animation": "Animation",
+    "comedy": "Comedy",
+    "crime": "Crime",
+    "documentary": "Documentary",
+    "drama": "Drama",
+    "family": "Family",
+    "fantasy": "Fantasy",
+    "history": "History",
+    "horror": "Horror",
+    "music": "Music",
+    "mystery": "Mystery",
+    "romance": "Romance",
+    "scienceFiction": "Science Fiction",
+    "tvMovie": "TV Movie",
+    "thriller": "Thriller",
+    "war": "War",
+    "western": "Western"
+  },
+  "search": {
+    "placeholder": "Search movies...",
+    "noResults": "No results found for",
+    "tryAgain": "Try searching for another title or check the spelling",
+    "searching": "Searching..."
+  },
+  "splash": {
+    "title": "WikiMovies",
+    "subtitle": "lukavieira.tech"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error loading"
+  },
+  "param": {
+    "language": "en-US"
+  }
+}
