@@ -363,6 +363,8 @@ export default function Home() {
               hasMore={hasMore}
               onLoadMore={loadMoreMovies}
               totalResults={totalResults}
+              isCategory={!!currentCategory}
+              isLoading={isSearching}
             />
           ) : (
             <>

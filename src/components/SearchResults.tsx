@@ -13,6 +13,8 @@ interface SearchResultsProps {
   hasMore: boolean;
   onLoadMore: () => void;
   totalResults?: number;
+  isCategory?: boolean;
+  isLoading?: boolean;
 }
 
 export default function SearchResults({
@@ -21,15 +23,24 @@ export default function SearchResults({
   hasMore,
   onLoadMore,
   totalResults,
+  isCategory = false,
+  isLoading = false,
 }: SearchResultsProps) {
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
   const { t } = useTranslation();
+
+  const displayTerm = isLoading
+    ? ""
+    : isCategory
+    ? t(`categories.${searchTerm.toLowerCase()}`)
+    : searchTerm;
 
   if (movies.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <h2 className="text-2xl font-bold mb-4">
-          {t("search.noResults")} "{searchTerm}"
+          {t("search.noResults")}
+          {!isLoading && ` "${displayTerm}"`}
         </h2>
         <p className="text-gray-400">{t("search.tryAgain")}</p>
       </div>
@@ -40,8 +51,9 @@ export default function SearchResults({
     <>
       <div className="px-4 md:px-8 pt-4">
         <h2 className="text-2xl font-bold mb-4">
-          {t("search.results")} "{searchTerm}"
-          {totalResults && totalResults > 0 && (
+          {t("search.results")}
+          {!isLoading && ` "${displayTerm}"`}
+          {totalResults && totalResults > 0 && !isLoading && (
             <span className="text-gray-400 text-lg ml-2">
               ({totalResults} {t("search.total")})
             </span>
