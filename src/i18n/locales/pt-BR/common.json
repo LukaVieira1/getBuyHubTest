@@ -52,7 +52,9 @@
     "placeholder": "Buscar filmes...",
     "noResults": "Não encontramos resultados para",
     "tryAgain": "Tente buscar por outro título ou verifique a ortografia",
-    "searching": "Buscando..."
+    "searching": "Buscando...",
+    "results": "Resultados para",
+    "total": "resultados encontrados"
   },
   "splash": {
     "title": "WikiMovies",
