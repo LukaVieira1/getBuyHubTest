@@ -6,15 +6,16 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 interface CategoryDropdownProps {
   categories: { id: number; name: string }[];
   onSelect: (categoryName: string) => void;
+  selectedCategory: string;
 }
 
 export default function CategoryDropdown({
   categories,
   onSelect,
+  selectedCategory,
 }: CategoryDropdownProps) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,7 +33,6 @@ export default function CategoryDropdown({
   }, []);
 
   const handleSelect = (categoryName: string) => {
-    setSelectedCategory(categoryName);
     onSelect(categoryName);
     setIsOpen(false);
   };
@@ -47,7 +47,9 @@ export default function CategoryDropdown({
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        {t("home.categories")}
+        {selectedCategory
+          ? t(`categories.${selectedCategory.toLowerCase()}`)
+          : t("home.categories")}
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
