@@ -8,7 +8,7 @@ import {
   ICastMember,
 } from "@/types/movie";
 import { api } from "@/providers/api";
-import { getGenderId } from "@/utils/moviesGenders";
+import { getGenderId } from "@/utils/moviesGenres";
 
 export async function getPopularMovies(
   page: number = 1,
@@ -81,11 +81,11 @@ export async function getSimilarMovies(
 }
 
 export async function getMoviesByGenre(
-  genre: Genre,
+  genre: string,
   page: number = 1,
   language: string
 ): Promise<IMovieResponse> {
-  const genreId = getGenderId(genre);
+  const genreId = getGenderId(genre as Genre);
   try {
     const { data } = await api.get<IMovieResponse>(`/discover/movie`, {
       params: {
