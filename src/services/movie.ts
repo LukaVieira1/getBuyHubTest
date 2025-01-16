@@ -30,13 +30,15 @@ export async function getPopularMovies(
 
 export async function getMoviesByKeywords(
   query: string,
-  language: string
+  language: string,
+  page: number = 1
 ): Promise<IMovieResponse> {
   try {
     const { data } = await api.get<IMovieResponse>("/search/movie", {
       params: {
         query,
         language,
+        page,
       },
     });
     return data;
