@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.0] - 2025-01-16
+
+### Added
+
+- Added Category dropdown to search results
+- Infinite scroll for search results
+- Improved search results loading
+- Added loading state for search results
+
 ## [1.1.0] - 2025-01-15
 
 ### Added
