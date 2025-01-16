@@ -13,6 +13,7 @@ import MovieCarousel from "@/components/MovieCarousel";
 import { Spinner } from "@/components/Spinner";
 import SearchBar from "@/components/SearchBar";
 import SearchResults from "@/components/SearchResults";
+import CategoryDropdown from "@/components/CategoryDropdown";
 
 // Framer Motion
 import { motion, AnimatePresence } from "framer-motion";
@@ -29,6 +30,9 @@ import { useUI } from "@/contexts/UIContext";
 // i18n
 import { useTranslation } from "react-i18next";
 
+// Utils
+import { genres } from "@/utils/moviesGenres";
+
 export default function Home() {
   const [popularMovies, setPopularMovies] = useState<IMovie[]>([]);
   const [fantasyMovies, setFantasyMovies] = useState<IMovie[]>([]);
@@ -41,7 +45,7 @@ export default function Home() {
   const [search, setSearch] = useState("");
 
   const [loading, setLoading] = useState(true);
-
+  const [categoryLoading, setCategoryLoading] = useState(false);
   const scrollPosition = useScrollPosition();
   const isScrolled = scrollPosition > 100;
   const { isModalOpen } = useUI();
@@ -77,7 +81,7 @@ export default function Home() {
         setRomanceMovies(romanceData.results);
         setDocumentaryMovies(documentaryData.results);
       } catch (error) {
-        console.error("Erro ao buscar filmes:", error);
+        console.error("Error fetching movies:", error);
       } finally {
         setLoading(false);
       }
@@ -90,6 +94,21 @@ export default function Home() {
     setSearchResults(null);
     setSearch("");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleCategorySelect = async (categoryName: string) => {
+    try {
+      setCategoryLoading(true);
+      setSearchResults(null);
+      setSearch("");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      const data = await getMoviesByGenre(categoryName, 1, t("param.language"));
+      setSearchResults(data.results);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    } finally {
+      setCategoryLoading(false);
+    }
   };
 
   if (loading) {
@@ -123,7 +142,7 @@ export default function Home() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row lg:items-center gap-4 py-4 lg:py-0 lg:h-16">
+          <div className="flex flex-col-reverse lg:flex-row lg:items-center gap-4 py-4 lg:py-0 lg:h-16">
             <motion.div
               className="text-2xl font-bold text-red-600 flex items-center justify-between lg:w-[140px]"
               whileHover={{ scale: 1.05 }}
@@ -138,13 +157,10 @@ export default function Home() {
                 >
                   {t("home.home")}
                 </motion.button>
-                {/* <motion.button
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {t("home.categories")}
-                </motion.button> */}
+                <CategoryDropdown
+                  categories={genres}
+                  onSelect={handleCategorySelect}
+                />
               </div>
             </motion.div>
             <div className="w-full lg:flex-1 lg:flex lg:justify-center">
@@ -165,13 +181,10 @@ export default function Home() {
               >
                 {t("home.home")}
               </motion.button>
-              {/* <motion.button
-                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {t("home.categories")}
-              </motion.button> */}
+              <CategoryDropdown
+                categories={genres}
+                onSelect={handleCategorySelect}
+              />
             </div>
           </div>
         </div>
@@ -180,10 +193,10 @@ export default function Home() {
       {/* Header */}
       <header
         className={`relative h-[70vh] mb-8 pt-16 max-[325px]:mt-36 max-[375px]:mt-24 ${
-          searchResults ? "hidden" : ""
+          searchResults || categoryLoading ? "hidden" : ""
         }`}
       >
-        {popularMovies[0] && (
+        {popularMovies[0] && !categoryLoading && (
           <>
             <div className="absolute inset-0">
               <img
@@ -248,34 +261,42 @@ export default function Home() {
             <SearchResults movies={searchResults} searchTerm={search} />
           ) : (
             <>
-              <MovieCarousel
-                title={t("categories.popular")}
-                initialMovies={popularMovies}
-              />
-              <MovieCarousel
-                title={t("categories.fantasy")}
-                initialMovies={fantasyMovies}
-              />
-              <MovieCarousel
-                title={t("categories.comedy")}
-                initialMovies={comedyMovies}
-              />
-              <MovieCarousel
-                title={t("categories.drama")}
-                initialMovies={dramaMovies}
-              />
-              <MovieCarousel
-                title={t("categories.horror")}
-                initialMovies={horrorMovies}
-              />
-              <MovieCarousel
-                title={t("categories.romance")}
-                initialMovies={romanceMovies}
-              />
-              <MovieCarousel
-                title={t("categories.documentary")}
-                initialMovies={documentaryMovies}
-              />
+              {categoryLoading ? (
+                <div className="flex items-center justify-center min-h-screen">
+                  <Spinner />
+                </div>
+              ) : (
+                <>
+                  <MovieCarousel
+                    title={t("categories.popular")}
+                    initialMovies={popularMovies}
+                  />
+                  <MovieCarousel
+                    title={t("categories.fantasy")}
+                    initialMovies={fantasyMovies}
+                  />
+                  <MovieCarousel
+                    title={t("categories.comedy")}
+                    initialMovies={comedyMovies}
+                  />
+                  <MovieCarousel
+                    title={t("categories.drama")}
+                    initialMovies={dramaMovies}
+                  />
+                  <MovieCarousel
+                    title={t("categories.horror")}
+                    initialMovies={horrorMovies}
+                  />
+                  <MovieCarousel
+                    title={t("categories.romance")}
+                    initialMovies={romanceMovies}
+                  />
+                  <MovieCarousel
+                    title={t("categories.documentary")}
+                    initialMovies={documentaryMovies}
+                  />
+                </>
+              )}
             </>
           )}
         </AnimatePresence>
