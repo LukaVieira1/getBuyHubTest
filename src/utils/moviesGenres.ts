@@ -1,6 +1,6 @@
 import { Genre } from "@/types/movie";
 
-const genres = [
+export const genres = [
   {
     id: 28,
     name: "Action",
